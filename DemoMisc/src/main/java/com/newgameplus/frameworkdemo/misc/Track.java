@@ -10,129 +10,34 @@ import com.newgameplus.framework.misc.Triple;
 import com.newgameplus.framework.misc.Vector2D;
 
 public class Track {
+    private static final boolean DEBUG_ENABLED = false;
+    private String name;
+    private BezierSpline2D spline;
+    private double splineWidth = 60;
+    private double maxLapMillis = 0;
 
-    protected BezierSpline2D spline;
+    private List<Triple<Vector2D, Vector2D, Vector2D>> listTriangle = new ArrayList<>();
 
-    protected double splineWidth = 60;
-
-    protected double maxLapMillis = 0;
-
-    //protected List<Quadruple<Vector2D, Vector2D, Vector2D, Vector2D>> listQuad = new ArrayList<Quadruple<Vector2D, Vector2D, Vector2D, Vector2D>>();
-    protected List<Triple<Vector2D, Vector2D, Vector2D>> listTriangle = new ArrayList<Triple<Vector2D, Vector2D, Vector2D>>();
-
-    public Track(BezierSpline2D spline, double splineWidth, double maxLapMillis) {
+    public Track(String name, BezierSpline2D spline, double splineWidth, double maxLapMillis) {
+        this.name = name;
         this.spline = spline;
         this.splineWidth = splineWidth;
         this.maxLapMillis = maxLapMillis;
         init();
     }
 
-    public void init() {
-
-        //listQuad.clear();
-        listTriangle.clear();
-
-        List<Vector2D> listPoint = spline.getListResultPoint();
-        List<Vector2D> listPerp = spline.getListResultPerpendicular();
-
-        Vector2D perp1, perp2, v11, v12, v21, v22;
-
-        for (int i = 0 ; i < listPoint.size() ; i++) {
-
-            if (i < listPoint.size() - 1 || spline.isClose()) {
-
-                if (i == listPoint.size() - 1 && spline.isClose()) {
-                    perp1 = listPerp.get(i).clone().multiply(splineWidth / 2);
-                    perp2 = listPerp.get(0).clone().multiply(splineWidth / 2);
-                    v11 = Vector2D.add(listPoint.get(i), perp1);
-                    v12 = Vector2D.substract(listPoint.get(i), perp1);
-                    v21 = Vector2D.add(listPoint.get(0), perp2);
-                    v22 = Vector2D.substract(listPoint.get(0), perp2);
-                }
-                else {
-                    perp1 = listPerp.get(i).clone().multiply(splineWidth / 2);
-                    perp2 = listPerp.get(i + 1).clone().multiply(splineWidth / 2);
-                    v11 = Vector2D.add(listPoint.get(i), perp1);
-                    v12 = Vector2D.substract(listPoint.get(i), perp1);
-                    v21 = Vector2D.add(listPoint.get(i + 1), perp2);
-                    v22 = Vector2D.substract(listPoint.get(i + 1), perp2);
-                }
-
-                //listQuad.add(new Quadruple<Vector2D, Vector2D, Vector2D, Vector2D>(v11.clone(), v12.clone(), v21.clone(), v22.clone()));
-
-                listTriangle.add(new Triple<Vector2D, Vector2D, Vector2D>(v11.clone(), v12.clone(), v21.clone()));
-                listTriangle.add(new Triple<Vector2D, Vector2D, Vector2D>(v22.clone(), v12.clone(), v21.clone()));
-
-                /*d.drawLine(v11.x, v11.y, v12.x, v12.y);
-                d.drawLine(v21.x, v21.y, v22.x, v22.y);
-                d.drawLine(v11.x, v11.y, v21.x, v21.y);
-                d.drawLine(v12.x, v12.y, v22.x, v22.y);*/
-
-                /*GL11.glBegin(GL_QUADS);
-
-                GL11.glVertex2d(v11.x, v11.y);
-                GL11.glVertex2d(v12.x, v12.y);
-                GL11.glVertex2d(v22.x, v22.y);
-                GL11.glVertex2d(v21.x, v21.y);
-
-                GL11.glEnd();*/
-
-            }
-        }
-
-    }
-
-    public void tick(double millis) {
-
-    }
-
-    public void renderDebug(Drawer d) {
-        for (int i = 0 ; i < listTriangle.size() ; i++) {
-            Triple<Vector2D, Vector2D, Vector2D> tri = listTriangle.get(i);
-
-            d.setColor(Color.GREEN);
-
-            d.drawLine(tri.a.x, tri.a.y, tri.b.x, tri.b.y);
-            d.drawLine(tri.b.x, tri.b.y, tri.c.x, tri.c.y);
-            d.drawLine(tri.a.x, tri.a.y, tri.c.x, tri.c.y);
-
-        }
-    }
-
-    public int isPointInTrack(Vector2D pos) {
-
-        for (int i = 0 ; i < listTriangle.size() ; i++) {
-            Triple<Vector2D, Vector2D, Vector2D> tri = listTriangle.get(i);
-
-            if (pointInTriangle(pos, tri.a, tri.b, tri.c)) {
-                return i;
-            }
-        }
-
-        return -1;
-    }
-
-    public double sign(Vector2D p1, Vector2D p2, Vector2D p3) {
-        return (p1.x - p3.x) * (p2.y - p3.y) - (p2.x - p3.x) * (p1.y - p3.y);
-    }
-
-    public boolean pointInTriangle(Vector2D p, Vector2D p1, Vector2D p2, Vector2D p3) {
+    private static boolean pointInTriangle(Vector2D p, Vector2D p1, Vector2D p2, Vector2D p3) {
+        boolean result;
         boolean b1 = sign(p, p1, p2) < 0;
         boolean b2 = sign(p, p2, p3) < 0;
         boolean b3 = sign(p, p3, p1) < 0;
-        return ((b1 == b2) && (b2 == b3));
+        result = (b1 == b2) && (b2 == b3);
+        return result;
     }
 
-    public double getSplineWidth() {
-        return splineWidth;
-    }
-
-    public void setSplineWidth(double splineWidth) {
-        this.splineWidth = splineWidth;
-    }
-
-    public BezierSpline2D getSpline() {
-        return spline;
+    private static double sign(Vector2D p1, Vector2D p2, Vector2D p3) {
+        return (p1.getX() - p3.getX()) * (p2.getY() - p3.getY()) -
+               (p2.getX() - p3.getX()) * (p1.getY() - p3.getY());
     }
 
     public List<Triple<Vector2D, Vector2D, Vector2D>> getListTriangle() {
@@ -143,8 +48,159 @@ public class Track {
         return maxLapMillis;
     }
 
-    public void setMaxLapMillis(double maxLapMillis) {
-        this.maxLapMillis = maxLapMillis;
+    public String getName() {
+        return name;
     }
 
+    public BezierSpline2D getSpline() {
+        return spline;
+    }
+
+    public double getSplineWidth() {
+        return splineWidth;
+    }
+
+    private void init() {
+        listTriangle.clear();
+        List<Vector2D> listPoint = spline.getListResultPoint();
+        List<Vector2D> listPerp = spline.getListResultPerpendicular();
+
+        final int listPointSize = listPoint.size();
+        Vector2D pointFirst;
+        Vector2D pointSecond;
+        Vector2D perpFirst;
+        Vector2D perpSecond;
+        Vector2D perp1;
+        Vector2D perp2;
+        Vector2D v11;
+        Vector2D v12;
+        Vector2D v21;
+        Vector2D v22;
+
+        for (int i = 0; i < listPointSize; i++) {
+            if (i < listPoint.size() - 1 || BezierSpline2D.isClose()) {
+
+                if (i == listPointSize - 1 && BezierSpline2D.isClose()) {
+                    perpFirst = new Vector2D(listPerp.get(i));
+                    perpSecond = new Vector2D(listPerp.get(0));
+                    pointFirst = new Vector2D(listPoint.get(i));
+                    pointSecond = new Vector2D(listPoint.get(0));
+                }
+                else {
+                    perpFirst = new Vector2D(listPerp.get(i));
+                    perpSecond = new Vector2D(listPerp.get(i + 1));
+                    pointFirst = new Vector2D(listPoint.get(i));
+                    pointSecond = new Vector2D(listPoint.get(i + 1));
+                }
+
+                perp1 = perpFirst.multiply(splineWidth / 2);
+                perp2 = perpSecond.multiply(splineWidth / 2);
+
+                v11 = Vector2D.add(pointFirst, perp1);
+                v12 = Vector2D.substract(pointFirst, perp1);
+                v21 = Vector2D.add(pointSecond, perp2);
+                v22 = Vector2D.substract(pointSecond, perp2);
+
+                listTriangle.add(new Triple<>(new Vector2D(v11),  new Vector2D(v12),
+                                              new Vector2D(v21)));
+                listTriangle.add(new Triple<>(new Vector2D(v22),  new Vector2D(v12),
+                                              new Vector2D(v21)));
+            }
+        }
+    }
+
+    public int isPointInTrack(Vector2D pos) {
+        for (int i = 0; i < listTriangle.size(); i++) {
+            Triple<Vector2D, Vector2D, Vector2D> tri = listTriangle.get(i);
+
+            if (pointInTriangle(pos, tri.getFirst(), tri.getSecond(), tri.getThird())) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+    public void renderCenterLine(Drawer d) {
+        List<Vector2D> listPoint = spline.getListResultPoint();
+        final int listPointSize = listPoint.size();
+        /* Current point. */
+        Vector2D current;
+        /* After current point. */
+        Vector2D next;
+
+        d.setColor(Color.WHITE);
+
+        for (int i = 0; i < listPointSize; i++) {
+            if (i == 0) {
+                /* Is first */
+                current = listPoint.get(i);
+                next = listPoint.get(1);
+
+            }
+            else if (i == (listPointSize - 1)) {
+                /* last */
+                current = listPoint.get(i);
+                next = listPoint.get(0);
+
+            }
+            else {
+                /* others */
+                current = listPoint.get(i);
+                next = listPoint.get(i + 1);
+            }
+
+            d.drawDashedLine(current.getX(), current.getY(), next.getX(), next.getY());
+        }
+    }
+    public void renderDebug(Drawer drawer) {
+        for (Triple<Vector2D, Vector2D, Vector2D> t : listTriangle) {
+            final double firstX = t.getFirst().getX();
+            final double firstY = t.getFirst().getY();
+            final double secondX = t.getSecond().getX();
+            final double secondY = t.getSecond().getY();
+            final double thirdX = t.getThird().getX();
+            final double thirdY = t.getThird().getY();
+
+            if (DEBUG_ENABLED) {
+                drawer.setColor(Color.GREEN);
+
+                drawer.drawLine(firstX, firstY, secondX, secondY);
+                //
+                drawer.drawLine(secondX, secondY, thirdX, thirdY);
+                drawer.drawLine(firstX, firstY, thirdX, thirdY);
+            }
+            else {
+                drawer.setColor(Color.LIGHT_GRAY);
+                int[] pointsX = { (int) firstX, (int) secondX, (int) thirdX };
+                int[] pointsY = { (int) firstY, (int) secondY, (int) thirdY };
+                drawer.fillPolygon(pointsX, pointsY, pointsX.length);
+            }
+        }
+    }
+
+    public void renderSplineDebug(Drawer drawer) {
+        if (DEBUG_ENABLED) {
+            int index = 0;
+
+            for (Vector2D point : spline.getListResultPoint()) {
+                drawer.setColor(Color.GREEN);
+                drawer.drawRect(point.getX(), point.getY(), 5, 5);
+                drawer.setColor(Color.BLUE);
+                drawer.drawRect(point.getX() + 5 * spline.getListResultPerpendicular().get(index).getX(),
+                                point.getY() + 5 * spline.getListResultPerpendicular().get(index).getY(), 5, 9);
+                index ++;
+            }
+        }
+    }
+
+
+    public void renderStart(Drawer d) {
+        Vector2D perpFirst = new Vector2D(spline.getListResultPerpendicular().get(0));
+        Vector2D pointFirst = new Vector2D(spline.getListResultPoint().get(0));
+        Vector2D perp1 = perpFirst.multiply(splineWidth);
+        Vector2D v11 = Vector2D.add(pointFirst, perp1);
+        Vector2D v12 = Vector2D.substract(pointFirst, perp1);
+        d.setColor(Color.RED);
+        d.drawLine(v11.getX(), v11.getY(), v12.getX(), v12.getY());
+    }
 }

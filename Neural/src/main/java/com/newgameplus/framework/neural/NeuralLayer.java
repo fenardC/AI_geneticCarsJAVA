@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NeuralLayer {
-
-    protected List<NeuralNeuron> listNeuron = new ArrayList<NeuralNeuron>();
-
+    protected List<NeuralNeuron> listNeuron = new ArrayList<>();
 
     public NeuralLayer() {
-
+        /* Add more if needed. */
     }
 
     public NeuralLayer(int nb) {
@@ -24,11 +22,8 @@ public class NeuralLayer {
         }
     }
 
-
-    public void random(double min, double max) {
-        for (NeuralNeuron neuron : listNeuron) {
-            neuron.random(min, max);
-        }
+    public void addNeuron(NeuralNeuron neuron) {
+        listNeuron.add(neuron);
     }
 
     public void calculate() {
@@ -39,10 +34,6 @@ public class NeuralLayer {
         for (NeuralNeuron neuron : listNeuron) {
             neuron.setOutput(neuron.getNewOutput());
         }
-    }
-
-    public void addNeuron(NeuralNeuron neuron) {
-        listNeuron.add(neuron);
     }
 
     public void connectAll(NeuralLayer previousLayer) {
@@ -57,4 +48,9 @@ public class NeuralLayer {
         return listNeuron;
     }
 
+    public void random(double min, double max) {
+        for (NeuralNeuron neuron : listNeuron) {
+            neuron.random(min, max);
+        }
+    }
 }

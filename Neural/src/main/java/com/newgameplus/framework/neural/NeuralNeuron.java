@@ -5,21 +5,16 @@ import java.util.List;
 
 import com.newgameplus.framework.misc.Misc;
 
-public class NeuralNeuron extends NeuralInput {
-
-    protected double threshold = 0;
-
-    protected List<Double> listWeight = new ArrayList<Double>();
-    protected List<NeuralInput> listInput = new ArrayList<NeuralInput>();
-
-    protected double output = 0;
-    protected double newOutput = 0;
-
-    protected NeuralActivation activationFunction = NeuralActivation.SIGMOID;
-
+final class NeuralNeuron extends NeuralInput {
+    private double threshold = 0;
+    private List<Double> listWeight = new ArrayList<>();
+    private List<NeuralInput> listInput = new ArrayList<>();
+    private double output = 0;
+    private double newOutput = 0;
+    private NeuralActivation activationFunction = NeuralActivation.SIGMOID;
 
     public NeuralNeuron() {
-
+        /* Add more if needed. */
     }
 
     public NeuralNeuron(NeuralActivation activationFunction) {
@@ -27,12 +22,11 @@ public class NeuralNeuron extends NeuralInput {
         this.activationFunction = activationFunction;
     }
 
-
     public void random(double min, double max) {
         listWeight.clear();
 
-        for (int i = 0 ; i < listInput.size() ; i++) {
-            listWeight.add(Misc.random(min, max));
+        for (int i = 0; i < listInput.size(); i++) {
+            listWeight.add(new Double(Misc.random(min, max)));
         }
 
         threshold = Misc.random(min, max);
@@ -42,8 +36,8 @@ public class NeuralNeuron extends NeuralInput {
         if (listInput.size() == listWeight.size() && activationFunction != null) {
             double res = -threshold;
 
-            for (int i = 0 ; i < listInput.size() ; i++) {
-                res += listInput.get(i).getValue() * listWeight.get(i);
+            for (int i = 0; i < listInput.size(); i++) {
+                res += listInput.get(i).getValue() * listWeight.get(i).doubleValue();
             }
 
             newOutput = activationFunction.calculate(res);
@@ -54,16 +48,8 @@ public class NeuralNeuron extends NeuralInput {
         listInput.add(input);
     }
 
-    public double getThreshold() {
-        return threshold;
-    }
-
     public void setThreshold(double threshold) {
         this.threshold = threshold;
-    }
-
-    public NeuralActivation getActivationFunction() {
-        return activationFunction;
     }
 
     public void setActivationFunction(NeuralActivation activationFunction) {
@@ -98,5 +84,4 @@ public class NeuralNeuron extends NeuralInput {
     public double getValue() {
         return output;
     }
-
 }

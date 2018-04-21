@@ -5,50 +5,33 @@ import java.awt.Color;
 import com.newgameplus.framework.draw.Drawer;
 import com.newgameplus.framework.misc.Vector2D;
 
-public class CarSensorPoint extends CarSensor {
+final class CarSensorPoint extends CarSensor {
+    private Vector2D offset;
+    private boolean value = false;
+    private int lastIndexTriangle = 0;
 
-    protected Vector2D offset;
-
-    protected boolean value = false;
-
-    protected int lastIndexTriangle = 0;
+    CarSensorPoint() {
+    }
 
     @Override
     public void check() {
         value = false;
+        final Vector2D pos = getAbsPosition();
 
-        Vector2D pos = getAbsPosition();
+        lastIndexTriangle = car.getTrack().isPointInTrack(pos);
 
-        if ((lastIndexTriangle = car.getTrack().isPointInTrack(pos)) != -1) {
+        if (lastIndexTriangle != -1) {
             value = true;
         }
-        else {
-            /*pos.x += 0.1;
-            if (car.getTrack().isPointInTrack(pos)) {
-                value = 1;
-            }*/
-        }
-
-    }
-
-    @Override
-    public void render(Drawer d) {
-        Vector2D pos = getAbsPosition();
-
-        d.setColor(value ? Color.BLUE : Color.RED);
-        d.drawRect((int) pos.x, (int) pos.y, 3, 3);
     }
 
     public Vector2D getAbsPosition() {
-        return Vector2D.add(car.getPosition(), Vector2D.rotate(offset, car.getAngle()).multiply(car.getRatio()));
+        return Vector2D.add(car.getPosition(),
+                            Vector2D.rotate(offset, car.getAngle()).multiply(car.getRatio()));
     }
 
-    public Vector2D getOffset() {
-        return offset;
-    }
-
-    public void setOffset(Vector2D offset) {
-        this.offset = offset;
+    public int getLastIndexTriangle() {
+        return lastIndexTriangle;
     }
 
     @Override
@@ -56,12 +39,14 @@ public class CarSensorPoint extends CarSensor {
         return value ? 1.0 : 0.0;
     }
 
-    public void setValue(boolean value) {
-        this.value = value;
+    @Override
+    public void render(final Drawer drawer) {
+        final Vector2D pos = getAbsPosition();
+        drawer.setColor(value ? Color.BLUE : Color.RED);
+        drawer.drawRect(pos.getX(), pos.getY(), 3, 3);
     }
 
-    public int getLastIndexTriangle() {
-        return lastIndexTriangle;
+    public void setOffset(final Vector2D offset) {
+        this.offset = offset;
     }
-
 }

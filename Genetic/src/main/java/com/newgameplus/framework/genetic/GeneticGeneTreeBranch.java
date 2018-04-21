@@ -5,7 +5,7 @@ import java.util.List;
 
 public abstract class GeneticGeneTreeBranch extends GeneticGeneObject {
 
-    protected List<GeneticGeneTreeBranch> listBranch = new ArrayList<GeneticGeneTreeBranch>();
+    protected List<GeneticGeneTreeBranch> listBranch = new ArrayList<>();
 
     protected GeneticGeneTreeBranch parent = null;
 
@@ -13,6 +13,7 @@ public abstract class GeneticGeneTreeBranch extends GeneticGeneObject {
         super(listPossible);
     }
 
+    @Override
     public abstract GeneticGeneTreeBranch clone();
 
     public int getLength() {
@@ -26,7 +27,7 @@ public abstract class GeneticGeneTreeBranch extends GeneticGeneObject {
     }
 
     public List<GeneticGeneTreeBranch> getListGeneticGeneTreeBranch() {
-        List<GeneticGeneTreeBranch> list = new ArrayList<GeneticGeneTreeBranch>();
+        List<GeneticGeneTreeBranch> list = new ArrayList<>();
         list.add(this);
 
         for (GeneticGeneTreeBranch operand : listBranch) {

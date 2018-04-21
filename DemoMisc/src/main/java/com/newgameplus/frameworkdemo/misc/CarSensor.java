@@ -2,31 +2,22 @@ package com.newgameplus.frameworkdemo.misc;
 
 import com.newgameplus.framework.draw.Drawer;
 
-public abstract class CarSensor {
+abstract class CarSensor {
+    Car car;
 
-    protected Car car;
-
-
-    public void tick(double millis) {
-        check();
+    void check() {
     }
 
-    public void check() {
+    abstract double getValue();
 
+    void render(Drawer d) {
     }
 
-    public void render(Drawer d) {
-
-    }
-
-    public abstract double getValue();
-
-    public Car getCar() {
-        return car;
-    }
-
-    public void setCar(Car car) {
+    void setCar(final Car car) {
         this.car = car;
     }
 
+    void tick() {
+        check();
+    }
 }

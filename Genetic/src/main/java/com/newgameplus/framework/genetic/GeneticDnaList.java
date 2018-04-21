@@ -8,7 +8,7 @@ import com.newgameplus.framework.misc.Misc;
 
 public abstract class GeneticDnaList extends GeneticDna {
 
-    protected List<GeneticGene> listGene = new ArrayList<GeneticGene>();
+    List<GeneticGene> listGene = new ArrayList<>();
 
     // DNA
 
@@ -30,12 +30,14 @@ public abstract class GeneticDnaList extends GeneticDna {
     public String toString() {
         StringBuilder builder = new StringBuilder();
 
-        for (int i = 0 ; i < listGene.size() ; i++) {
-            if (i > 0) {
-                builder.append(",");
-            }
+        if (null != listGene) {
+            for (int i = 0 ; i < listGene.size() ; i++) {
+                if (i > 0) {
+                    builder.append(",");
+                }
 
-            builder.append(listGene.get(i).toString());
+                builder.append(listGene.get(i).toString());
+            }
         }
 
         return builder.toString();
@@ -44,11 +46,11 @@ public abstract class GeneticDnaList extends GeneticDna {
     // Reproduction
 
     @Override
-    public double getSimilarityPercent(GeneticDna dna) {
-        double percent = 0;
+    public double getSimilarityPercent(GeneticDna other) {
+        double percent = 0.0;
 
-        if (dna instanceof GeneticDnaList) {
-            GeneticDnaList myDna = (GeneticDnaList) dna;
+        if (other instanceof GeneticDnaList) {
+            GeneticDnaList myDna = (GeneticDnaList) other;
             int minGene = Math.min(myDna.getListGene().size(), getListGene().size());
             int maxGene = Math.max(myDna.getListGene().size(), getListGene().size());
 
@@ -70,7 +72,7 @@ public abstract class GeneticDnaList extends GeneticDna {
     }
 
     @Override
-    public Couple<GeneticDna, GeneticDna> cross(GeneticDna other, GeneticCrossParameter param) {
+    public Couple<GeneticDna, GeneticDna> cross(GeneticDna other) {
         Couple<GeneticDna, GeneticDna> couple = null;
 
         if (other instanceof GeneticDnaList) {
@@ -78,14 +80,12 @@ public abstract class GeneticDnaList extends GeneticDna {
             List<GeneticGene> codeA = listGene;
             List<GeneticGene> codeB = b.getListGene();
 
-            couple = new Couple<GeneticDna, GeneticDna>();
-
             int maxLength = Math.max(codeA.size(), codeB.size());
-            int sizeCross = (int)(maxLength * param.getCrossRatio());
+            int sizeCross = (int)(maxLength * GeneticCrossParameter.getCrossRatio());
             int indexCross = Misc.random(1, maxLength - sizeCross);
 
-            List<GeneticGene> startA = new ArrayList<GeneticGene>();
-            List<GeneticGene> endA = new ArrayList<GeneticGene>();
+            List<GeneticGene> startA = new ArrayList<>();
+            List<GeneticGene> endA = new ArrayList<>();
 
             if (indexCross < codeA.size()) {
                 endA.addAll(codeA.subList(indexCross, codeA.size()));
@@ -95,8 +95,8 @@ public abstract class GeneticDnaList extends GeneticDna {
                 startA.addAll(codeA);
             }
 
-            List<GeneticGene> startB = new ArrayList<GeneticGene>();
-            List<GeneticGene> endB = new ArrayList<GeneticGene>();
+            List<GeneticGene> startB = new ArrayList<>();
+            List<GeneticGene> endB = new ArrayList<>();
 
             if (indexCross < codeB.size()) {
                 endB.addAll(codeB.subList(indexCross, codeB.size()));
@@ -128,17 +128,13 @@ public abstract class GeneticDnaList extends GeneticDna {
                 dnaChildB.getListGene().add(gene.clone());
             }
 
-            //dnaChildB.getListGene().addAll(startB);
-            //dnaChildB.getListGene().addAll(endA);
-
-            couple.a = dnaChildA;
-            couple.b = dnaChildB;
-
+            couple = new Couple<>((GeneticDna)dnaChildA, (GeneticDna)dnaChildB);
         }
 
         return couple;
     }
 
+    @Override
     public void mutate(double chancePerGeneInPercent) {
         for (int i = 0 ; i < listGene.size() ; i++) {
             if (Misc.random(chancePerGeneInPercent)) {
@@ -155,5 +151,4 @@ public abstract class GeneticDnaList extends GeneticDna {
 
         listGene = null;
     }
-
 }

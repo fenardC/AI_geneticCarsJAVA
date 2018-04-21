@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<packaging>pom</packaging>
+	<groupId>com.newgameplus.framework</groupId>
+	<artifactId>neuralDemo</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>NeuralDemo</name>
+	<url>http://maven.apache.org</url>
+	<organization>
+		<name>C.Fenard</name>
+	</organization>
+	<description>Top maven project for application and modules.</description>
+	<modules>
+		<module>Debug</module>
+		<module>DemoDraw</module>
+		<module>DemoGui</module>
+		<module>DemoMisc</module>
+		<module>Draw</module>
+		<module>Genetic</module>
+		<module>Misc</module>
+		<module>Neural</module>
+		<module>TrackData</module>
+		<module>CoreApp</module>
+		<module>AppLearning</module>
+		<module>AppRace</module>
+		<module>AppCurve</module>
+	</modules>
+
+	<properties>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+		<maven.compiler.optimize>true</maven.compiler.optimize>
+		<maven.compiler.debug>false</maven.compiler.debug>
+		<maven.compiler.debuglevel>-g:none</maven.compiler.debuglevel>
+		<maven.compiler.showWarnings>true</maven.compiler.showWarnings>
+		<maven.compiler.verbose>true</maven.compiler.verbose>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<projectpath>./</projectpath>
+		<modulepath>./</modulepath>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<!-- configuration -->
+				<!-- compilerArgs -->
+				<!-- arg>-verbose</arg -->
+				<!-- arg>-g:none</arg -->
+				<!-- arg>-Xlint:all,-options,-path</arg -->
+				<!-- /compilerArgs -->
+				<!-- /configuration -->
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<descriptors>
+						<descriptor>${projectpath}src/main/assembly/jar.xml</descriptor>
+					</descriptors>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.0.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.0.2</version>
+			</plugin>
+		</plugins>
+	</build>
+</project>

@@ -2,12 +2,10 @@ package com.newgameplus.framework.genetic;
 
 public class GeneticDnaNeuralNetwork extends GeneticDnaList {
 
-    protected double min;
-    protected double max;
-
-    protected int geneSize;
-    protected int nbGene;
-
+    private double min;
+    private double max;
+    private int geneSize;
+    private int nbGene;
 
     public GeneticDnaNeuralNetwork(double min, double max, int geneSize, int nbGene) {
         this.min = min;
@@ -42,5 +40,4 @@ public class GeneticDnaNeuralNetwork extends GeneticDnaList {
 
         return this;
     }
-
 }

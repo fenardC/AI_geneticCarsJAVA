@@ -11,11 +11,11 @@ import com.newgameplus.framework.misc.Misc;
 
 public class GeneticPopulation {
 
-    protected List<GeneticIndividual> listIndividual = new ArrayList<GeneticIndividual>();
+    protected List<GeneticIndividual> listIndividual = new ArrayList<>();
 
-    protected TreeMap<Double, List<GeneticIndividual>> mapScore = new TreeMap<Double, List<GeneticIndividual>>();
+    protected TreeMap<Double, List<GeneticIndividual>> mapScore = new TreeMap<>();
 
-    protected List<GeneticIndividual> listSelection = new ArrayList<GeneticIndividual>();
+    protected List<GeneticIndividual> listSelection = new ArrayList<>();
 
     protected int populationGoal = 0;
     protected GeneticDna dnaType = null;
@@ -31,7 +31,7 @@ public class GeneticPopulation {
     protected double bloodlineDnaMinimumDifference = 0;
     protected double bestWeight = 5;
 
-    protected List<GeneticIndividual> listBloodline = new ArrayList<GeneticIndividual>();
+    protected List<GeneticIndividual> listBloodline = new ArrayList<>();
 
     protected double averageScore = 0;
     protected double averageScoreBloodline = 0;
@@ -39,9 +39,7 @@ public class GeneticPopulation {
     protected double bestScoreEver = -1000000000;
     protected int generationNumber = 1;
 
-    protected GeneticIndividual bestIndiv = null;
-
-    protected GeneticCrossParameter crossParam = new GeneticCrossParameter();
+    private GeneticIndividual bestIndiv = null;
 
     public void generatePopulation(int number, GeneticDna dnaType) {
         populationGoal = number;
@@ -59,20 +57,12 @@ public class GeneticPopulation {
     }
 
     public void proceedNextGeneration() {
-        // Kill all individuals after reproduction
 
         proceedEvaluation();
 
         proceedSelection();
 
-        //List<GeneticIndividual> listIndividualToDestroy = new ArrayList<GeneticIndividual>(listIndividual);
-
         proceedReproduction();
-
-        /*listIndividualToDestroy.removeAll(listIndividual);
-        for (GeneticIndividual indiv : listIndividualToDestroy) {
-            indiv.destroy();
-        }*/
 
         proceedPopulationControl();
         generationNumber++;
@@ -85,8 +75,8 @@ public class GeneticPopulation {
         double totalScore = 0;
 
         for (GeneticIndividual indiv : listIndividual) {
-            Double score = indiv.getScore();
-            totalScore += score;
+            Double score = new Double(indiv.getScore());
+            totalScore += score.doubleValue();
 
             if (!mapScore.containsKey(score)) {
                 mapScore.put(score, new ArrayList<GeneticIndividual>());
@@ -94,13 +84,13 @@ public class GeneticPopulation {
 
             mapScore.get(score).add(indiv);
 
-            if (bestScoreInLastGeneration < score) {
-                bestScoreInLastGeneration = score;
+            if (bestScoreInLastGeneration < score.doubleValue()) {
+                bestScoreInLastGeneration = score.doubleValue();
                 bestIndivGen = indiv;
             }
         }
 
-        if (listIndividual.size() > 0) {
+        if (!listIndividual.isEmpty()) {
             averageScore = totalScore / listIndividual.size();
         }
         else {
@@ -135,12 +125,12 @@ public class GeneticPopulation {
             removeLowestBloodline();
         }
 
-        if (listBloodline.size() > 0) {
+        if (!listBloodline.isEmpty()) {
             totalScore = 0;
 
             for (GeneticIndividual indiv : listBloodline) {
-                Double score = indiv.getScore();
-                totalScore += score;
+                Double score = new Double(indiv.getScore());
+                totalScore += score.doubleValue();
             }
 
             averageScoreBloodline = totalScore / listBloodline.size();
@@ -175,13 +165,13 @@ public class GeneticPopulation {
 
         // Randomly reproduce
         for (GeneticIndividual indiv : listSelection) {
-            reproduce2_2(indiv, listSelection.get(Misc.random(0, listSelection.size() - 1)));
+            reproduce22(indiv, listSelection.get(Misc.random(0, listSelection.size() - 1)));
         }
 
     }
 
     public void proceedReproduction() {
-        HashMap<Object, Double> map = new HashMap<Object, Double>();
+        HashMap<Object, Double> map = new HashMap<>();
         double min = 0;
         double max = 0;
 
@@ -200,13 +190,11 @@ public class GeneticPopulation {
         // [min, max] => [1, bestWeight]
         for (GeneticIndividual indiv : listSelection) {
             if (max > min) {
-                map.put(indiv, 1 + (bestWeight - 1) * (indiv.getScore() - min) / (max - min));
+                map.put(indiv, new Double(1 + (bestWeight - 1) * (indiv.getScore() - min) / (max - min)));
             }
             else {
-                map.put(indiv, 1.0);
+                map.put(indiv, new Double(1.0));
             }
-
-            //map.put(indiv, indiv.getScore() - min + 1);
         }
 
         listIndividual.clear();
@@ -219,11 +207,11 @@ public class GeneticPopulation {
         // Randomly reproduce
         for (int i = 0 ; i < populationGoal - nbLess ; i++) {
             GeneticIndividual indiv = (GeneticIndividual) Misc.randomInWeightedMap(map);
-            HashMap<Object, Double> map2 = new HashMap<Object, Double>(map);
+            HashMap<Object, Double> map2 = new HashMap<>(map);
             map2.remove(indiv);
             GeneticIndividual indiv2 = (GeneticIndividual) Misc.randomInWeightedMap(map2);
 
-            reproduce2_1(indiv, indiv2);
+            reproduce21(indiv, indiv2);
         }
 
         for (int i = 0 ; i < nbBlood ; i++) {
@@ -255,32 +243,35 @@ public class GeneticPopulation {
         indiv.destroy();
     }
 
-    public void reproduce2_2(GeneticIndividual a, GeneticIndividual b) {
+    public void reproduce22(GeneticIndividual a, GeneticIndividual b) {
         if (a.getDna().isCompatible(b.getDna())) {
 
-            Couple<GeneticDna, GeneticDna> couple = a.getDna().cross(b.getDna(), crossParam);
+            Couple<GeneticDna, GeneticDna> couple = a.getDna().cross(b.getDna());
 
             if (couple != null) {
+                final GeneticDna first = couple.getFirst();
+                final GeneticDna second = couple.getSecond();
 
-                checkAndApplyMutation(couple.a);
-                checkAndApplyMutation(couple.b);
+                checkAndApplyMutation(first);
+                checkAndApplyMutation(second);
 
-                listIndividual.add(new GeneticIndividual(couple.a));
-                listIndividual.add(new GeneticIndividual(couple.b));
+                listIndividual.add(new GeneticIndividual(first));
+                listIndividual.add(new GeneticIndividual(second));
             }
         }
     }
 
-    public void reproduce2_1(GeneticIndividual a, GeneticIndividual b) {
+    public void reproduce21(GeneticIndividual a, GeneticIndividual b) {
         if (a.getDna().isCompatible(b.getDna())) {
 
-            Couple<GeneticDna, GeneticDna> couple = a.getDna().cross(b.getDna(), crossParam);
+            Couple<GeneticDna, GeneticDna> couple = a.getDna().cross(b.getDna());
 
             if (couple != null) {
+                final GeneticDna first = couple.getFirst();
 
-                checkAndApplyMutation(couple.a);
+                checkAndApplyMutation(first);
 
-                listIndividual.add(new GeneticIndividual(couple.a));
+                listIndividual.add(new GeneticIndividual(first));
             }
         }
     }
@@ -292,8 +283,9 @@ public class GeneticPopulation {
     }
 
     public void checkBloodline(GeneticIndividual indiv) {
-        if (nbBloodline > 0 && (bestIndiv == null
-                                || (bestIndiv.getScore() * (1 - bloodlineScoreTolerance / 100.0) <= indiv.getScore()))) {
+        if (nbBloodline > 0 &&
+                (bestIndiv == null
+                 || (bestIndiv.getScore() * (1 - bloodlineScoreTolerance / 100.0) <= indiv.getScore()))) {
 
             GeneticIndividual lowest = null;
 
@@ -310,10 +302,11 @@ public class GeneticPopulation {
             }
 
             boolean ok = true;
-            List<GeneticIndividual> listSimi = new ArrayList<GeneticIndividual>();
+            List<GeneticIndividual> listSimi = new ArrayList<>();
 
             for (int i = 0 ; i < listBloodline.size() ; i++) {
-                if (bloodlineDnaMinimumDifference > 100 - indiv.getDna().getSimilarityPercent(listBloodline.get(i).getDna())) {
+                if (bloodlineDnaMinimumDifference > 100 - indiv.getDna().getSimilarityPercent(listBloodline.get(
+                            i).getDna())) {
                     // Too much similarity
                     if (listBloodline.get(i).getScore() < indiv.getScore()) {
                         listSimi.add(listBloodline.get(i));
@@ -325,7 +318,7 @@ public class GeneticPopulation {
             }
 
             if (ok) {
-                if (listSimi.size() > 0) {
+                if (!listSimi.isEmpty()) {
                     for (GeneticIndividual simi : listSimi) {
                         listBloodline.remove(simi);
                     }

@@ -1,15 +1,13 @@
 package com.newgameplus.framework.genetic;
 
-public class GeneticCrossParameter {
+final class GeneticCrossParameter {
+    private static final double CROSS_RATIO = 0.7;
 
-    protected double crossRatio = 0.7;
+    private GeneticCrossParameter() {
 
-    public double getCrossRatio() {
-        return crossRatio;
     }
 
-    public void setCrossRatio(double crossRatio) {
-        this.crossRatio = crossRatio;
+    static double getCrossRatio() {
+        return CROSS_RATIO;
     }
-
 }

@@ -7,8 +7,8 @@ import com.newgameplus.framework.misc.Misc;
 
 public class GeneticGeneObject extends GeneticGene {
 
-    protected List<Object> listPossible = new ArrayList<Object>();
-    protected List<Object> code = new ArrayList<Object>();
+    protected List<Object> listPossible = new ArrayList<>();
+    protected List<Object> code = new ArrayList<>();
     protected int size = 0;
 
     public GeneticGeneObject(List<Object> listPossible) {
@@ -21,6 +21,7 @@ public class GeneticGeneObject extends GeneticGene {
         this.size = size;
     }
 
+    @Override
     public GeneticGene clone() {
         GeneticGeneObject gene = new GeneticGeneObject(listPossible, size);
 
@@ -59,7 +60,7 @@ public class GeneticGeneObject extends GeneticGene {
     public GeneticGeneObject randomGene() {
         code.clear();
 
-        if (getListPossible().size() > 0) {
+        if (!getListPossible().isEmpty()) {
             for (int i = 0 ; i < size ; i++) {
                 code.add(getListPossible().get(Misc.random(0, getListPossible().size() - 1)));
             }
@@ -71,7 +72,7 @@ public class GeneticGeneObject extends GeneticGene {
     @Override
     public void mutate() {
         int i = 0;
-        List<Object> oldCode = new ArrayList<Object>(code);
+        List<Object> oldCode = new ArrayList<>(code);
 
         while (i < 30 && oldCode.equals(code)) {
             randomGene();

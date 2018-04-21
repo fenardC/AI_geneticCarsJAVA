@@ -4,17 +4,19 @@ import com.newgameplus.framework.misc.Misc;
 
 public class GeneticGeneString extends GeneticGene {
 
-    protected String charset = "";
-    protected String code = "";
-    protected int size = 0;
+    private String charset = "";
+    private String code = "";
+    private int size = 0;
 
     public GeneticGeneString(String charset, int size) {
+        super();
         this.charset = charset;
         this.size = size;
     }
 
+    @Override
     public GeneticGene clone() {
-        GeneticGeneString gene = new GeneticGeneString(charset, size);
+        final GeneticGeneString gene = new GeneticGeneString(charset, size);
 
         gene.code = code;
 
@@ -24,7 +26,7 @@ public class GeneticGeneString extends GeneticGene {
     @Override
     public boolean equals(GeneticGene gene) {
         if (gene != null && gene instanceof GeneticGeneString) {
-            GeneticGeneString myGene = (GeneticGeneString) gene;
+            final GeneticGeneString myGene = (GeneticGeneString) gene;
 
             if (size == myGene.size) {
                 return code.equals(myGene.code);
@@ -41,11 +43,11 @@ public class GeneticGeneString extends GeneticGene {
 
     @Override
     public GeneticGeneString randomGene() {
-        StringBuilder builder = new StringBuilder();
-        int n = charset.length();
+        final StringBuilder builder = new StringBuilder();
+        final int charsetLength = charset.length();
 
         for (int i = 0 ; i < size ; i++) {
-            int index = Misc.random(0, n - 1);
+            final int index = Misc.random(0, charsetLength - 1);
             builder.append(charset.substring(index, index + 1));
         }
 
@@ -55,12 +57,12 @@ public class GeneticGeneString extends GeneticGene {
 
     @Override
     public void mutate() {
-        int i = 0;
-        String oldCode = code;
+        int count = 0;
+        final String oldCode = code;
 
-        while (i < 10 && oldCode.equals(code)) {
+        while (count < 10 && oldCode.equals(code)) {
             randomGene();
-            i++;
+            count++;
         }
     }
 
@@ -68,16 +70,8 @@ public class GeneticGeneString extends GeneticGene {
         return code;
     }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
-
     public int getSize() {
         return size;
-    }
-
-    public void setSize(int size) {
-        this.size = size;
     }
 
     public String getCharset() {
@@ -94,5 +88,4 @@ public class GeneticGeneString extends GeneticGene {
         charset = null;
         code = null;
     }
-
 }

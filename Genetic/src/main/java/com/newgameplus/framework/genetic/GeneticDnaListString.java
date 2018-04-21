@@ -7,7 +7,6 @@ public class GeneticDnaListString extends GeneticDnaList {
     protected int geneSize;
     protected int nbGene;
 
-
     public GeneticDnaListString(String charset, int geneSize) {
         this.charset = charset;
         this.geneSize = geneSize;

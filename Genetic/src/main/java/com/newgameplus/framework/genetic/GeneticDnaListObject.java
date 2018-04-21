@@ -5,7 +5,7 @@ import java.util.List;
 
 public class GeneticDnaListObject extends GeneticDnaList {
 
-    protected List<Object> listPossible = new ArrayList<Object>();
+    protected List<Object> listPossible = new ArrayList<>();
     protected int geneSize;
     protected int nbGene;
 

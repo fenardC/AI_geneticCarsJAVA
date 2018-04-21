@@ -2,11 +2,11 @@ package com.newgameplus.framework.neural;
 
 public class NeuralInputValue extends NeuralInput {
 
-    protected double value;
-
+    private double value;
 
     public NeuralInputValue() {
-
+        super();
+        /* Add more if needed. */
     }
 
     public NeuralInputValue(double value) {
@@ -14,13 +14,12 @@ public class NeuralInputValue extends NeuralInput {
         this.value = value;
     }
 
-
     @Override
     public double getValue() {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(final double value) {
         this.value = value;
     }
 

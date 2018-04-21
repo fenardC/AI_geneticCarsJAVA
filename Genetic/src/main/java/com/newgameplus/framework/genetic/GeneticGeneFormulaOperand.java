@@ -8,21 +8,23 @@ import com.newgameplus.framework.misc.Misc;
 
 public class GeneticGeneFormulaOperand extends GeneticGeneTreeBranch {
 
-    protected static List<Object> listOperandPossible = new ArrayList<Object>();
-    protected static List<Object> listOperatorPossible = new ArrayList<Object>();
-    protected static HashMap<Object, Integer> mapNbOperand = new HashMap<Object, Integer>();
+    protected static List<Object> listOperandPossible = new ArrayList<>();
+    protected static List<Object> listOperatorPossible = new ArrayList<>();
+    protected static HashMap<Object, Integer> mapNbOperand = new HashMap<>();
 
     static {
 
-        addOperator("+", 2);
-        addOperator("-", 2);
-        addOperator("*", 2);
-        addOperator("/", 2);
-        addOperator("sqrt", 1);
-        addOperator("^2", 1);
+        final Integer oneOperand = new Integer(1);
+        final Integer twoOperand = new Integer(2);
+        addOperator("+", twoOperand);
+        addOperator("-", twoOperand);
+        addOperator("*", twoOperand);
+        addOperator("/", twoOperand);
+        addOperator("sqrt", oneOperand);
+        addOperator("^2", oneOperand);
 
         for (int i = 1 ; i <= 10 ; i++) {
-            addOperand(i);
+            addOperand(new Integer(i));
         }
     }
 
@@ -69,10 +71,10 @@ public class GeneticGeneFormulaOperand extends GeneticGeneTreeBranch {
     }
 
     public void repareGene() {
-        List<GeneticGeneTreeBranch> listOld = new ArrayList<GeneticGeneTreeBranch>(listBranch);
+        List<GeneticGeneTreeBranch> listOld = new ArrayList<>(listBranch);
 
         if (isOperator()) {
-            int nb = getNbOperandForOperator(code.get(0)) - listBranch.size();
+            int nb = getNbOperandForOperator(code.get(0)).intValue() - listBranch.size();
 
             if (nb > 0) {
                 for (int i = 0 ; i < nb ; i++) {
@@ -102,11 +104,11 @@ public class GeneticGeneFormulaOperand extends GeneticGeneTreeBranch {
         return code.size() > 0 && listOperatorPossible.contains(code.get(0));
     }
 
-    public int getNbOperandForOperator(Object operator) {
+    public static Integer getNbOperandForOperator(Object operator) {
         return mapNbOperand.get(operator);
     }
 
-    public static void addOperator(Object operator, int nbOperand) {
+    public static void addOperator(Object operator, Integer nbOperand) {
         listOperatorPossible.add(operator);
         mapNbOperand.put(operator, nbOperand);
     }
@@ -114,10 +116,4 @@ public class GeneticGeneFormulaOperand extends GeneticGeneTreeBranch {
     public static void addOperand(Object operand) {
         listOperandPossible.add(operand);
     }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-    }
-
 }

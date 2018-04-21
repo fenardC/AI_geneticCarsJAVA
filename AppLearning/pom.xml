@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.newgameplus.framework</groupId>
+		<artifactId>neuralDemo</artifactId>
+		<version>1.0-SNAPSHOT</version>
+		<relativePath>../../neuralDemoJAVA/pom.xml</relativePath>
+	</parent>
+	<groupId>com.cf.framework.applearning</groupId>
+	<artifactId>AppLearning</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>AppLearning</name>
+	<url>http://maven.apache.org</url>
+	<organization>
+		<name>C.Fenard</name>
+	</organization>
+	<description>Demo application for cars learning.</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.cf.framework.coreapp</groupId>
+			<artifactId>CoreApp</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.newgameplus.framework.debug</groupId>
+			<artifactId>Debug</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.newgameplus.frameworkdemo.misc</groupId>
+			<artifactId>DemoMisc</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.newgameplus.framework.draw</groupId>
+			<artifactId>Draw</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.newgameplus.framework.neural</groupId>
+			<artifactId>Neural</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.cf.framework.trackdata</groupId>
+			<artifactId>TrackData</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<!-- This is for have an executable Packaging Jar -->
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>com.cf.framework.applearning.AppLearning</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>executable</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>

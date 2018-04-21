@@ -3,7 +3,7 @@ package com.newgameplus.framework.genetic;
 public class GeneticDnaTreeFormula extends GeneticDnaTree {
 
     public GeneticDnaTreeFormula() {
-
+        /* Add more if needed. */
     }
 
     @Override
@@ -29,5 +29,4 @@ public class GeneticDnaTreeFormula extends GeneticDnaTree {
 
         return this;
     }
-
 }

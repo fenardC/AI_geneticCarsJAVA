@@ -1,5 +1,7 @@
 package com.newgameplus.frameworkdemo.misc;
 
+import java.util.concurrent.TimeUnit;
+
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
@@ -29,6 +31,20 @@ public class AppTest
      * Rigourous Test :-)
      */
     public void testApp() {
-        assertTrue(true);
+        System.out.println("~o~ testApp ~o~");
+        System.out.println("Calling DemoCar.main()");
+        DemoCar.main(null);
+
+        try {
+            final long duree = 10;
+            System.out.println("Waiting ... " + duree + " s");
+            TimeUnit.SECONDS.sleep(duree);
+        }
+        catch (InterruptedException e) {
+            System.out.println(e);
+        }
+
+        System.out.println("~o~ testApp ~o~");
+        assertTrue("Demo car passed", true);
     }
 }

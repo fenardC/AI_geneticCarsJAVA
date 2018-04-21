@@ -7,13 +7,6 @@ import com.newgameplus.framework.misc.Misc;
 
 public class GeneticGeneDouble extends GeneticGene {
 
-    protected List<Object> code = new ArrayList<Object>();
-    protected int size = 0;
-
-    protected double min = 0;
-    protected double max = 0;
-
-
     public GeneticGeneDouble(double min, double max) {
         this.min = min;
         this.max = max;
@@ -25,6 +18,7 @@ public class GeneticGeneDouble extends GeneticGene {
         this.size = size;
     }
 
+    @Override
     public GeneticGene clone() {
         GeneticGeneDouble gene = new GeneticGeneDouble(min, max, size);
 
@@ -56,7 +50,13 @@ public class GeneticGeneDouble extends GeneticGene {
 
     @Override
     public String toString() {
-        return code.toString();
+        String res = "";
+
+        if (null != code) {
+            res = code.toString();
+        }
+
+        return res;
     }
 
     @Override
@@ -64,7 +64,7 @@ public class GeneticGeneDouble extends GeneticGene {
         code.clear();
 
         for (int i = 0 ; i < size ; i++) {
-            code.add(Misc.random(min, max));
+            code.add(new Double(Misc.random(min, max)));
         }
 
         return this;
@@ -73,7 +73,7 @@ public class GeneticGeneDouble extends GeneticGene {
     @Override
     public void mutate() {
         int i = 0;
-        List<Object> oldCode = new ArrayList<Object>(code);
+        List<Object> oldCode = new ArrayList<>(code);
 
         while (i < 30 && oldCode.equals(code)) {
             randomGene();
@@ -99,4 +99,11 @@ public class GeneticGeneDouble extends GeneticGene {
         code = null;
     }
 
+    protected List<Object> code = new ArrayList<>();
+
+    protected int size = 0;
+
+    protected double min = 0;
+
+    protected double max = 0;
 }

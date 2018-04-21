@@ -2,7 +2,7 @@ package com.newgameplus.framework.genetic;
 
 public abstract class GeneticGene {
 
-
+    @Override
     public abstract GeneticGene clone();
 
     public abstract boolean equals(GeneticGene gene);
@@ -14,5 +14,4 @@ public abstract class GeneticGene {
     public abstract Object getValue();
 
     public abstract void destroy();
-
 }
