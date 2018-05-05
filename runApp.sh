@@ -3,21 +3,21 @@
 ## set -xv
 
 
-SCRIPT=$(basename ${BASH_SOURCE[0]} .sh) 
+SCRIPT=$(basename ${BASH_SOURCE[0]} .sh)
 
-error() { echo >&2 "$SCRIPT: $*"; exit 1; } 
-info()  { echo >&2 "$SCRIPT: $*"; } 
+error() { echo >&2 "${SCRIPT}: $*"; exit 1; }
+info()  { echo >&2 "${SCRIPT}: $*"; }
 
 
 info $*
 
-CYGWIN=$(uname -o)
-info ${CYGWIN}
+OPERATING_SYSTEM=$(uname -o)
+info "${OPERATING_SYSTEM}"
 
-info "${JAVA_HOME}"
-
+JAVA_APP=$(which java)
+info "${JAVA_APP}"
 
 set -x
-find ./*/target -name "$1"*-executable.jar -exec "${JAVA_HOME}"/bin/javaw.exe -jar {} \;
+find ./*/target -name "$1"*-executable.jar -exec "${JAVA_APP}" -jar {} \;
 set +x
 
