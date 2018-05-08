@@ -6,10 +6,6 @@ import com.newgameplus.framework.draw.Drawer;
 import com.newgameplus.framework.misc.Vector2D;
 
 final class CarSensorPoint extends CarSensor {
-    private Vector2D offset;
-    private boolean value = false;
-    private int lastIndexTriangle = 0;
-
     CarSensorPoint() {
     }
 
@@ -49,4 +45,10 @@ final class CarSensorPoint extends CarSensor {
     public void setOffset(final Vector2D offset) {
         this.offset = offset;
     }
+
+    private Vector2D offset;
+
+    private boolean value = false;
+
+    private int lastIndexTriangle = 0;
 }

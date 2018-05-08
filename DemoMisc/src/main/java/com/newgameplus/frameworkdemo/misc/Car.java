@@ -15,24 +15,6 @@ import com.newgameplus.framework.misc.Vector2D;
 import com.newgameplus.frameworkdemo.gui.ScreenGeneticCar;
 
 public final class Car {
-    private String name;
-    private int maxIndexTriangleDiff = 10;
-    private Track track;
-    private GeneticIndividual indiv;
-    private HashMap<String, CarSensor> mapRoadSensor = new HashMap<>();
-    private List<CarSensorPoint> listRoadCollision = new ArrayList<>();
-    private int wheelCommand = 0;
-    private int engineCommand = 0;
-    private int engine = 0;
-    private double acceleration = 128;
-    private Vector2D position;
-    private double angle;
-    private double ratio = 1;
-    private TextureModifier textureModifier = new TextureModifier();
-    private int bestIndexSpline = 0;
-    private int lap = 0;
-    private double timeLap = 0;
-    private Color color = null;
 
     public Car(String name, int typeSensor, double ratio) {
 
@@ -304,4 +286,40 @@ public final class Car {
 
         position.add(Vector2D.getVector2DFromValueAngle(ratioEngine * 300 * m, angle));
     }
+
+    private String name;
+
+    private int maxIndexTriangleDiff = 10;
+
+    private Track track;
+
+    private GeneticIndividual indiv;
+
+    private HashMap<String, CarSensor> mapRoadSensor = new HashMap<>();
+
+    private List<CarSensorPoint> listRoadCollision = new ArrayList<>();
+
+    private int wheelCommand = 0;
+
+    private int engineCommand = 0;
+
+    private int engine = 0;
+
+    private double acceleration = 128;
+
+    private Vector2D position;
+
+    private double angle;
+
+    private double ratio = 1;
+
+    private TextureModifier textureModifier = new TextureModifier();
+
+    private int bestIndexSpline = 0;
+
+    private int lap = 0;
+
+    private double timeLap = 0;
+
+    private Color color = null;
 }

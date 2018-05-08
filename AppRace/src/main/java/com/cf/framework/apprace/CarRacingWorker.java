@@ -17,6 +17,35 @@ import com.newgameplus.frameworkdemo.misc.Track;
 final class CarRacingWorker extends CarMotionHelper {
 
     private class Worker extends Thread {
+
+        @Override
+        public void run() {
+            Logger.debug(isDaemon() ? "Deamon Thread" : "User Thread (none-deamon)" + " is starting");
+
+            while (onRunning) {
+                try {
+                    Thread.sleep(WORKER_DELAY_IN_MS);
+                }
+                catch (InterruptedException e) {
+                    Logger.debug("run() " + e);
+                    Thread.currentThread().interrupt();
+                }
+
+                doCarRacing(drawer);
+            }
+
+            Logger.debug("Worker thread ends.");
+        }
+
+        public void startRunning() {
+            onRunning = true;
+            super.start();
+        }
+
+        public void stopRunning() {
+            onRunning = false;
+        }
+
         private volatile boolean onRunning = true;
 
         /*
@@ -43,7 +72,7 @@ final class CarRacingWorker extends CarMotionHelper {
             drawer.drawString("LAPS       : " + lapCount, posX, 60);
         }
 
-        private void doRacing() {
+        private void doCarRacing(final Drawer drawer) {
             /* Clear graphics of drawer. */
             drawer.clear();
             /* Some progress informations on screen*/
@@ -71,46 +100,9 @@ final class CarRacingWorker extends CarMotionHelper {
             lapCount = car.getLap();
             drawer.show();
         }
-
-        @Override
-        public void run() {
-            Logger.debug(isDaemon() ? "Deamon Thread" : "User Thread (none-deamon)" + " is starting");
-
-            while (onRunning) {
-                try {
-                    Thread.sleep(WORKER_DELAY_IN_MS);
-                }
-                catch (InterruptedException e) {
-                    Logger.debug("run() " + e);
-                    Thread.currentThread().interrupt();
-                }
-
-                doRacing();
-            }
-
-            Logger.debug("Worker thread ends.");
-        }
-
-        public void startRunning() {
-            onRunning = true;
-            super.start();
-        }
-
-        public void stopRunning() {
-            onRunning = false;
-        }
     }
 
     /*********************************************************************************/
-    private static final boolean NEURAL_NETWORK_DRAW = true;
-
-    private Drawer drawer;
-    private Track currentTrack;
-
-    private Car car;
-
-    private Worker worker;
-
     CarRacingWorker(boolean daemon, Drawer drawer) {
         super();
 
@@ -121,6 +113,14 @@ final class CarRacingWorker extends CarMotionHelper {
         worker = new Worker(daemon);
 
         init();
+    }
+
+    public void startRunning() {
+        worker.startRunning();
+    }
+
+    public void stopRunning() {
+        worker.stopRunning();
     }
 
     private void init() {
@@ -142,11 +142,11 @@ final class CarRacingWorker extends CarMotionHelper {
                                         NETWORK_GENE_SIZE, NETWORK_GENE_NUMBER);
 
         for (int i = 0; i < NETWORK_GENE_NUMBER; i++) {
-            final GeneticGeneDouble geneticGene =
+            final GeneticGeneDouble geneDouble =
                 new GeneticGeneDouble(-NETWORK_GENE_VALUE_MAX, NETWORK_GENE_VALUE_MAX,
                                       NETWORK_GENE_SIZE);
-            geneticGene.getCode().add(new Double(weights.getValue()[i]));
-            dnaNetwork.getListGene().add(geneticGene);
+            geneDouble.getCode().add(new Double(weights.getValue()[i]));
+            dnaNetwork.getListGene().add(geneDouble);
         }
 
         /* Initialize weight of neurons with values from learning. */
@@ -160,11 +160,13 @@ final class CarRacingWorker extends CarMotionHelper {
         startCarOnTrack(currentTrack, car);
     }
 
-    public void startRunning() {
-        worker.startRunning();
-    }
+    private static final boolean NEURAL_NETWORK_DRAW = true;
 
-    public void stopRunning() {
-        worker.stopRunning();
-    }
+    private Drawer drawer;
+
+    private Track currentTrack;
+
+    private Car car;
+
+    private Worker worker;
 }

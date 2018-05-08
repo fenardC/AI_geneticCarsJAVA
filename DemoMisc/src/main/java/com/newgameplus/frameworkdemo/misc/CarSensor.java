@@ -3,7 +3,6 @@ package com.newgameplus.frameworkdemo.misc;
 import com.newgameplus.framework.draw.Drawer;
 
 abstract class CarSensor {
-    Car car;
 
     void check() {
     }
@@ -20,4 +19,6 @@ abstract class CarSensor {
     void tick() {
         check();
     }
+
+    Car car;
 }

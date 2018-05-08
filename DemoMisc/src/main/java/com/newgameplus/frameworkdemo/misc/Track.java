@@ -10,14 +10,6 @@ import com.newgameplus.framework.misc.Triple;
 import com.newgameplus.framework.misc.Vector2D;
 
 public class Track {
-    private static final boolean DEBUG_ENABLED = false;
-    private String name;
-    private BezierSpline2D spline;
-    private double splineWidth = 60;
-    private double maxLapMillis = 0;
-
-    private List<Triple<Vector2D, Vector2D, Vector2D>> listTriangle = new ArrayList<>();
-
     public Track(String name, BezierSpline2D spline, double splineWidth, double maxLapMillis) {
         this.name = name;
         this.spline = spline;
@@ -203,4 +195,16 @@ public class Track {
         d.setColor(Color.RED);
         d.drawLine(v11.getX(), v11.getY(), v12.getX(), v12.getY());
     }
+
+    private static final boolean DEBUG_ENABLED = false;
+
+    private String name;
+
+    private BezierSpline2D spline;
+
+    private double splineWidth = 60;
+
+    private double maxLapMillis = 0;
+
+    private List<Triple<Vector2D, Vector2D, Vector2D>> listTriangle = new ArrayList<>();
 }

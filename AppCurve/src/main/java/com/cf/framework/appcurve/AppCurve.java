@@ -36,13 +36,7 @@ public class AppCurve {
 
     private DrawerOnCanvas drawer;
 
-    private JPanel northPanel;
-    private JLabel modeSelection;
     private final ButtonGroup modeButtonGroup = new ButtonGroup();
-    private JRadioButton modeButton1;
-    private JRadioButton modeButton2;
-    private JRadioButton modeButton3;
-    private JRadioButton modeButton4;
 
     private JPanel southPanel;
     private JButton clearPush1;
@@ -73,18 +67,18 @@ public class AppCurve {
         drawer.setForeground(Color.RED);
         drawer.setBackground(Color.BLACK);
 
-        northPanel = new JPanel();
+        final JPanel northPanel = new JPanel();
         northPanel.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         northPanel.setToolTipText("Select mode.");
         northPanel.setPreferredSize(new Dimension(150, 100));
         northPanel.setLayout(new GridLayout(5, 1, 5, 5));
 
-        modeSelection = new JLabel("Mode");
+        final JLabel modeSelection = new JLabel("Mode");
         modeSelection.setAlignmentX(Component.CENTER_ALIGNMENT);
         modeSelection.setFont(new Font(FONT_VERDANA, Font.PLAIN, 14));
         modeSelection.setToolTipText("The different mode the user can select thanks to the buttons below.");
 
-        modeButton1 = new JRadioButton("Line mode");
+        final JRadioButton modeButton1 = new JRadioButton("Line mode");
         modeButton1.setFont(new Font(FONT_VERDANA, Font.PLAIN, 12));
         modeButton1.setToolTipText("Line Segments (Click to add points)");
         modeButton1.addActionListener(new ActionListener() {
@@ -94,7 +88,7 @@ public class AppCurve {
             }
         });
 
-        modeButton4 = new JRadioButton("Bezier Sampling mode");
+        final JRadioButton modeButton4 = new JRadioButton("Bezier Sampling mode");
         modeButton4.setPreferredSize(new Dimension(180, 23));
         modeButton4.setFont(new Font(FONT_VERDANA, Font.PLAIN, 12));
         modeButton4.setToolTipText("Bezier sampling / reduction (Drag to add points)");
@@ -128,7 +122,7 @@ public class AppCurve {
             }
         });
 
-        modeButton2 = new JRadioButton("Bezier mode");
+        final JRadioButton modeButton2 = new JRadioButton("Bezier mode");
         modeButton2.setFont(new Font(FONT_VERDANA, Font.PLAIN, 12));
         modeButton2.setToolTipText("Bezier curve (Click to add points)");
         modeButton2.addActionListener(new ActionListener() {
@@ -138,7 +132,7 @@ public class AppCurve {
             }
         });
 
-        modeButton3 = new JRadioButton("Bezier Interpolation mode");
+        final JRadioButton modeButton3 = new JRadioButton("Bezier Interpolation mode");
         modeButton3.setFont(new Font(FONT_VERDANA, Font.PLAIN, 12));
         modeButton3.setToolTipText("Bezier interpolation (Click to add points)");
         modeButton3.addActionListener(new ActionListener() {

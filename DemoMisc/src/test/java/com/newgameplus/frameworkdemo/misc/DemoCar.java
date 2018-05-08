@@ -5,6 +5,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -68,7 +69,14 @@ class DemoCar {
         mainFrame.getContentPane().add(mainPanel, BorderLayout.CENTER);
         mainPanel.setLayout(new BorderLayout(0, 0));
 
-        canvas = new Canvas();
+        canvas = new Canvas() {
+            /* Drop painting operation by AWT system. */
+            @Override
+            public void paint(Graphics g) {
+                //Logger.debug("paint()>");
+            }
+        };
+
         canvas.setIgnoreRepaint(true);
         canvas.setForeground(Color.WHITE);
         canvas.setFont(new Font("Verdana", Font.BOLD | Font.ITALIC, 16));

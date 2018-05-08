@@ -7,10 +7,6 @@ import com.newgameplus.framework.misc.Vector2D;
 import com.newgameplus.frameworkdemo.gui.ScreenGeneticCar;
 
 final class CarSensorLine extends CarSensor {
-    private double angle = 0;
-    private double dist = 0;
-    private double value = 0;
-
     CarSensorLine() {
         super();
     }
@@ -67,4 +63,10 @@ final class CarSensorLine extends CarSensor {
     void setAngle(final double angle) {
         this.angle = angle;
     }
+
+    private double angle = 0;
+
+    private double dist = 0;
+
+    private double value = 0;
 }

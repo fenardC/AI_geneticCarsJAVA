@@ -12,24 +12,6 @@ import com.newgameplus.frameworkdemo.misc.Car;
 import com.newgameplus.frameworkdemo.misc.Track;
 
 public class CarMotionHelper {
-    protected static final int CAR_MILLIS_PER_TICK = 18;
-    protected static final int WORKER_DELAY_IN_MS = 10;
-
-    protected static final double CAR_RATIO = 0.5;
-    protected static final int CAR_SENSOR_TYPE = ScreenGeneticCar.TYPE_SENSOR_LINE;
-
-    private static final int NETWORK_ENGINE_INPUT_INDEX = ScreenGeneticCar.SENSOR_LINE_NUMBER;
-    private static final int NETWORK_NUMBER_OF_NEURONS = 2;
-    protected static final double NETWORK_GENE_VALUE_MAX = 5.0;
-    protected static final int NETWORK_GENE_SIZE = 1;
-    protected static final int NETWORK_GENE_NUMBER =
-        NETWORK_NUMBER_OF_NEURONS * (ScreenGeneticCar.SENSOR_LINE_NUMBER + 1 + 1);
-
-    /* 60 55 50:OK 48: KO 45:KO 42:KO 40:KO */
-    protected static final int TRACK_SPLINE_WIDTH = 60;
-
-    private NeuralNetwork network = new NeuralNetwork(NETWORK_GENE_VALUE_MAX);
-
     public CarMotionHelper() {
         super();
     }
@@ -89,6 +71,7 @@ public class CarMotionHelper {
         track.renderCenterLine(drawer);
         track.renderStart(drawer);
     }
+
     protected static void startCarOnTrack(final Track track, final Car car) {
         car.putOnTrack(track);
         car.setLap(0);
@@ -100,4 +83,28 @@ public class CarMotionHelper {
         /* Update all internals of a car. */
         car.tick(0.01);
     }
+
+    protected static final int CAR_MILLIS_PER_TICK = 18;
+
+    protected static final int WORKER_DELAY_IN_MS = 10;
+
+    protected static final double CAR_RATIO = 0.5;
+
+    protected static final int CAR_SENSOR_TYPE = ScreenGeneticCar.TYPE_SENSOR_LINE;
+
+    private static final int NETWORK_ENGINE_INPUT_INDEX = ScreenGeneticCar.SENSOR_LINE_NUMBER;
+
+    private static final int NETWORK_NUMBER_OF_NEURONS = 2;
+
+    protected static final double NETWORK_GENE_VALUE_MAX = 5.0;
+
+    protected static final int NETWORK_GENE_SIZE = 1;
+
+    protected static final int NETWORK_GENE_NUMBER =
+        NETWORK_NUMBER_OF_NEURONS * (ScreenGeneticCar.SENSOR_LINE_NUMBER + 1 + 1);
+
+    /* 60 55 50:OK 48: KO 45:KO 42:KO 40:KO */
+    protected static final int TRACK_SPLINE_WIDTH = 60;
+
+    private NeuralNetwork network = new NeuralNetwork(NETWORK_GENE_VALUE_MAX);
 }

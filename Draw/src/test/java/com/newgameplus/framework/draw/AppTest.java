@@ -5,6 +5,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.util.concurrent.TimeUnit;
 
@@ -21,7 +22,14 @@ import junit.framework.TestSuite;
 public class AppTest extends TestCase {
     final JFrame mainFrame = new JFrame("Testing drawer");
     final JPanel mainPanel = new JPanel();
-    final Canvas canvas = new Canvas();
+    final Canvas canvas = new Canvas() {
+        /* Drop painting operation by AWT system. */
+        @Override
+        public void paint(Graphics g) {
+            //Logger.debug("paint()>");
+        }
+    };
+
 
     /**
      * Create the test case

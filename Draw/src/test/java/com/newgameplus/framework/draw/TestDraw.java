@@ -22,15 +22,16 @@ public class TestDraw {
         // System.out.println("testApp() : " + EventQueue.isDispatchThread());
 
         drawer.setColor(Color.GREEN);
-        drawer.drawDashedLine(50, 75, 150, 150);
+        drawer.drawDashedLine(50.0, 75.0, 150.0, 150.0);
 
         drawer.setColor(Color.BLUE);
-        drawer.drawLine(75, 150, 300, 150);
+        drawer.drawLine(75.0, 150.0, 300.0, 150.0);
 
         drawer.setColor(Color.RED);
-        final int[] xPoints = { 50, 400, 150 };
-        final int[] yPoints = { 200, 200, 400 };
-        drawer.drawPolygon(xPoints, yPoints, xPoints.length);
+        final int[] xPoints = {50, 400, 150};
+        final int[] yPoints = {200, 200, 400};
+        final int pointCount = xPoints.length;
+        drawer.drawPolygon(xPoints, yPoints, pointCount);
 
         drawer.setColor(Color.WHITE);
         drawer.drawRect(160.0, 160.0, 250, 250);
@@ -39,7 +40,7 @@ public class TestDraw {
 
         drawer.fillCircle(50.0, 400.0, 50);
 
-        drawer.fillPolygon(xPoints, yPoints, xPoints.length);
+        drawer.fillPolygon(xPoints, yPoints, pointCount);
 
         final double posX = 420.0;
         final double posY = 200.0;

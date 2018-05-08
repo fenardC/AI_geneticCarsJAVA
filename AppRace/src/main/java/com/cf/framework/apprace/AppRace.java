@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -61,7 +62,14 @@ final class AppRace {
         mainPanel.setBorder(new LineBorder(Color.LIGHT_GRAY, 2));
         mainPanel.setLayout(new BorderLayout(0, 0));
 
-        canvas = new Canvas();
+        canvas = new Canvas() {
+            /* Drop painting operation by AWT system. */
+            @Override
+            public void paint(Graphics g) {
+                //Logger.debug("paint()>");
+            }
+        };
+
         canvas.setSize(new Dimension(1280, 1024));
         canvas.setIgnoreRepaint(true);
         canvas.setFont(new Font(FONT_VERDANA, Font.BOLD | Font.ITALIC, 14));
